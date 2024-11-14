@@ -15,7 +15,7 @@ export function Navbar() {
             </Link>
           </Button>
           <Button>
-            <Link href='sign-in'>
+            <Link href='sign-up'>
               Get Taskify for free
             </Link>
           </Button>
