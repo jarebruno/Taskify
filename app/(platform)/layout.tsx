@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { Toaster } from 'sonner'
 
 export default function Layout ({
   children,
@@ -7,6 +8,7 @@ export default function Layout ({
 }>) {
   return (
     <ClerkProvider afterSignOutUrl='/'>
+      <Toaster />
       {children}
     </ClerkProvider>
   )
