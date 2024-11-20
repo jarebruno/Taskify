@@ -11,7 +11,7 @@ interface Props {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'primary' 
 }
 
-export function FormSubmit({ children, isDisabled, className, variant} : Props) {
+export function FormSubmit({ children, isDisabled, className, variant } : Props) {
   const { pending } = useFormStatus()
   return (
     <Button disabled={pending || isDisabled} type='submit' variant={variant} className={cn(className)} size='sm'>
