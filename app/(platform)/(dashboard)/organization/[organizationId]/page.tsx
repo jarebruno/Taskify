@@ -1,6 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Info } from './_components/info';
 import { BoardList } from './_components/board-list';
+import { Suspense } from 'react';
 
 export default function Page() {
 
@@ -9,7 +10,9 @@ export default function Page() {
       <Info />
       <Separator className='my-4'/>
       <div className='px-2'>
-        <BoardList />
+        <Suspense fallback={<BoardList.Skeleton />}>
+          <BoardList />
+        </Suspense>
       </div>
     </div>
   )
