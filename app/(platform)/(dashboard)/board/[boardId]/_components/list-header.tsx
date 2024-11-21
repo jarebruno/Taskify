@@ -5,6 +5,7 @@ import { List } from '@prisma/client'
 import { ElementRef, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useEventListener } from 'usehooks-ts'
+import { ListOptions } from './list-options'
 
 interface Props {
   list: List
@@ -91,6 +92,7 @@ export function ListHeader({ list }: Props) {
       <div onClick={enableEditing} className='w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent'>
         {title}
       </div>
+      <ListOptions list={list} onAddCard={() => {}}/>
     </div>
   )
 }
