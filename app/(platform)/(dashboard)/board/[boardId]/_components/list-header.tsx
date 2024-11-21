@@ -9,9 +9,10 @@ import { ListOptions } from './list-options'
 
 interface Props {
   list: List
+  onAddCard: () => void
 }
 
-export function ListHeader({ list }: Props) {
+export function ListHeader({ list, onAddCard }: Props) {
   const [title, setTitle] = useState(list.title)
   const [isEditing, setIsEditing] = useState(false)
   const formRef = useRef<ElementRef<'form'>>(null)
@@ -92,7 +93,7 @@ export function ListHeader({ list }: Props) {
       <div onClick={enableEditing} className='w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent'>
         {title}
       </div>
-      <ListOptions list={list} onAddCard={() => {}}/>
+      <ListOptions list={list} onAddCard={onAddCard}/>
     </div>
   )
 }

@@ -52,7 +52,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   } catch {
     return {
-      error: 'Can create list'
+      error: 'Can not create list'
     }
   }
 
