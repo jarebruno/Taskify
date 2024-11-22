@@ -1,4 +1,5 @@
 'use client'
+import { useCardModal } from '@/hooks/use-card-modal'
 import { Draggable } from '@hello-pangea/dnd'
 import { Card } from '@prisma/client'
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function CardItem({ card, index }: Props) {
+  const cardModal = useCardModal()
   return (
     <Draggable draggableId={card.id} index={index}>
       {
@@ -19,6 +21,7 @@ export function CardItem({ card, index }: Props) {
               ref={provided.innerRef}
               className='truncate border-2 border-transparent hover:border-black py-2 px-3 text-sm bg-white rounded-md shadow-sm'
               role='button'
+              onClick={() => {cardModal.onOpen(card.id)}}
             >
               {card.title}
             </div>
