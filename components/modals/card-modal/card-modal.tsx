@@ -5,6 +5,8 @@ import { fetcher } from '@/lib/fetcher'
 import { CardWithList } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { CardHeader } from './card-header'
+import { CardDescription } from './card-description'
+import { CardActions } from './card-actions'
 
 export function CardModal() {
   const id = useCardModal((state) => state.id)
@@ -27,6 +29,24 @@ export function CardModal() {
             ? <CardHeader.Skeleton />
             : <CardHeader card={cardData} />
         }
+        <div className='grid grid-cols-1 md:grid-cols-4 md:gap-4'>
+          <div className='col-span-3'>
+            <div className='w-full space-y-6'>
+              {
+                !cardData
+                ? <CardDescription.Skeleton />
+                : <CardDescription card={cardData}/>
+              }
+            </div>
+          </div>
+          <div>
+            {
+              !cardData
+              ? <CardActions.Skeleton />
+              : <CardActions card={cardData}/>
+            }
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )
