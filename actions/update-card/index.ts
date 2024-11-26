@@ -7,6 +7,8 @@ import { InputType, ReturnType } from './types'
 import { revalidatePath } from 'next/cache'
 import { createSafeAction } from '@/lib/create-safe-action'
 import { UpdateCard } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth()
@@ -19,9 +21,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   const { id, boardId, ...values } = data
 
-  let board
+  let card
   try {
-    board = await db.card.update({
+    card = await db.card.update({
       where: {
         id,
         list: {
@@ -34,6 +36,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         ...values
       }
     })
+    await createAuditLog({
+      entityId: card.id,
+      entityTitle: card.title,
+      entityType: ENTITY_TYPE.CARD,
+      action: ACTION.UPDATE
+    })
   } catch (error) {
     return {
       error: 'Can not update card'
@@ -41,7 +49,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   revalidatePath(`/board/${id}`)
-  return { data: board }
+  return { data: card }
 }
 
 export const updateCard = createSafeAction(UpdateCard, handler)

@@ -50,6 +50,9 @@ export function CardDescription({ card }: Props) {
       queryClient.invalidateQueries({
         queryKey: ['card', data.id]
       })
+      queryClient.invalidateQueries({
+        queryKey: ['card-logs', card.id]
+      })
       toast.success(`Card ${card.title} updated`)
       disableEditing()
     },

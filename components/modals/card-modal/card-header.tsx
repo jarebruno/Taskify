@@ -30,6 +30,9 @@ export function CardHeader({ card }: Props) {
       queryClient.invalidateQueries({
         queryKey: ['card', card.id]
       })
+      queryClient.invalidateQueries({
+        queryKey: ['card-logs', card.id]
+      })
       toast.success(`Renamed to ${data.title}`)
       setTitle(data.title)
     },

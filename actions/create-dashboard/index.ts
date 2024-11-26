@@ -8,6 +8,8 @@ import { createSafeAction } from '@/lib/create-safe-action'
 
 import { InputType, ReturnType} from './types'
 import { CreateBoard } from './schema'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
 
@@ -48,6 +50,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageUserName
       }
     })
+
+    await createAuditLog({
+      entityId: board.id,
+      entityTitle: board.title,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.CREATE
+    })
+    
   } catch {
     return {
       error: 'Internal error'

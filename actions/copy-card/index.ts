@@ -1,9 +1,11 @@
 'use server'
 import { auth } from '@clerk/nextjs/server'
 import { revalidatePath } from 'next/cache'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 import { db } from '@/lib/db'
 import { createSafeAction } from '@/lib/create-safe-action'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 import { InputType, ReturnType } from './types'
 import { CopyCard } from './schema'
@@ -62,6 +64,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         order: newOrder,
         listId: originalCard.listId
       }
+    })
+
+    await createAuditLog({
+      entityId: card.id,
+      entityTitle: card.title,
+      entityType: ENTITY_TYPE.CARD,
+      action: ACTION.CREATE
     })
 
   } catch {

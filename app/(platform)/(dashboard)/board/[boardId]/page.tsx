@@ -34,8 +34,6 @@ export default async function Page({ params }: Props) {
     }
   })
 
-  console.log(lists)
-
   return (
     <div className='p-4 h-full overflow-x-auto'>
       <ListContainer listsWithCards={lists} boardId={params.boardId} />
