@@ -7,6 +7,9 @@ import { Hint } from '@/components/hint';
 import { db } from '@/lib/db';
 import { redirect } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MAX_FREE_BOARDS } from '@/constants/boards';
+import { getAvailableAccount } from '@/lib/org-limit';
+import { checkSubscription } from '@/lib/subscription';
 
 export async function BoardList () {
 
@@ -24,6 +27,9 @@ export async function BoardList () {
       createdAt: 'desc'
     }
   })
+
+  const availableAccount = await getAvailableAccount()
+  const isPro = await checkSubscription()
 
   return (
     <div className='space-y-4'>
@@ -50,7 +56,7 @@ export async function BoardList () {
         <FormPopover sideOffset={10} side='right'>
           <div role='button' className='aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition'>
             <p className='text-sm'>Create new board</p>
-            <span className='text-xs'>5 remaining</span>
+            <span className='text-xs'>{isPro ? 'Unlimited' : `${MAX_FREE_BOARDS - availableAccount} remaining`}</span>
             <Hint
               sideOffset={40}
               description={`

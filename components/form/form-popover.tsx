@@ -12,6 +12,7 @@ import { createBoard } from '@/actions/create-dashboard'
 import { FormInput } from './form-input'
 import { FormSubmit } from './form-submit'
 import { FormPicker } from './form-picker'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 interface Props {
   children: React.ReactNode
@@ -23,6 +24,7 @@ interface Props {
 export function FormPopover({ children, side = 'bottom', align, sideOffset = 0 }: Props) {
   const closeRef = useRef<ElementRef<'button'>>(null)
   const router = useRouter()
+  const proModal = useProModal()
 
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
@@ -32,6 +34,7 @@ export function FormPopover({ children, side = 'bottom', align, sideOffset = 0 }
     },
     onError: (error) => {
       toast.success(error)
+      proModal.onOpen()
     }
   })
 

@@ -10,6 +10,8 @@ import { InputType, ReturnType} from './types'
 import { CreateBoard } from './schema'
 import { ACTION, ENTITY_TYPE } from '@prisma/client'
 import { createAuditLog } from '@/lib/create-audit-log'
+import { hasAvailableCount, increaseAvailableAccount } from '@/lib/org-limit'
+import { checkSubscription } from '@/lib/subscription'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
 
@@ -17,6 +19,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   if (!userId || !orgId) {
     return {
       error: 'Unauthorized'
+    }
+  }
+
+  const canCreate = await hasAvailableCount()
+  const isPro = await checkSubscription()
+
+  if (!canCreate && !isPro) {
+    return {
+      error: 'You have reached your limit of free boards. Please upgrade to create more.'
     }
   }
 
@@ -57,6 +68,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityType: ENTITY_TYPE.BOARD,
       action: ACTION.CREATE
     })
+    
+    if (!isPro) {
+      await increaseAvailableAccount()
+    }
     
   } catch {
     return {

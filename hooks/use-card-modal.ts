@@ -3,7 +3,7 @@ import { create } from 'zustand'
 type CardModalStore = {
   id?: string
   isOpen: boolean
-  onOpen: (is: string) => void
+  onOpen: (id: string) => void
   onClose: () => void
 }
 

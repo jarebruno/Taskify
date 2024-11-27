@@ -10,6 +10,7 @@ import { InputType, ReturnType } from './types'
 import { DeleteBoard } from './schema'
 import { createAuditLog } from '@/lib/create-audit-log'
 import { ACTION, ENTITY_TYPE } from '@prisma/client'
+import { decreaseAvailableAccount } from '@/lib/org-limit'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth()
@@ -31,6 +32,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       }
     })
 
+    await decreaseAvailableAccount()
+
     await createAuditLog({
       entityId: board.id,
       entityTitle: board.title,
@@ -38,7 +41,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       action: ACTION.DELETE
     })
     
-  } catch (error) {
+  } catch {
     return {
       error: 'Can not delete board'
     }
