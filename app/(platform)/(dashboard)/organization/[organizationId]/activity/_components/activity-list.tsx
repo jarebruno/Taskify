@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
 import { db } from '@/lib/db'
-import { log } from 'console'
 import { ActivityItem } from '@/components/activity-item'
 import { Skeleton } from '@/components/ui/skeleton'
 

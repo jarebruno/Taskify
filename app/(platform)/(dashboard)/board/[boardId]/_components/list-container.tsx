@@ -48,6 +48,7 @@ export function ListContainer ({ boardId, listsWithCards }: Props ) {
     }
   }) 
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onDragEnd = (result: any) => {
     const { destination, source, type } = result
     if (!destination) return
