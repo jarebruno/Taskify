@@ -11,6 +11,7 @@ import { DeleteBoard } from './schema'
 import { createAuditLog } from '@/lib/create-audit-log'
 import { ACTION, ENTITY_TYPE } from '@prisma/client'
 import { decreaseAvailableAccount } from '@/lib/org-limit'
+import { checkSubscription } from '@/lib/subscription'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth()
@@ -22,6 +23,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { id } = data
+  const isPro = await checkSubscription()
 
   let board
   try {
@@ -32,7 +34,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       }
     })
 
-    await decreaseAvailableAccount()
+    if (!isPro) {
+      await decreaseAvailableAccount()
+    }
 
     await createAuditLog({
       entityId: board.id,
